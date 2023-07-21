@@ -23,7 +23,7 @@ type Users struct {
 	Users []User `json:"users"`
 }
 
-func LoadJson() map[string]interface{} {
+func loadJson() map[string]interface{} {
 	jsonFile, err := os.Open("./users.json")
 	defer jsonFile.Close()
 	if err != nil {
@@ -35,11 +35,10 @@ func LoadJson() map[string]interface{} {
 	}
 	var result map[string]interface{}
 	json.Unmarshal(byteValue, &result)
-	fmt.Println(result)
 	return result
 }
 
-func LoadUsers() Users {
+func loadUsers() Users {
 	jsonFile, err := os.Open("./users.json")
 	defer jsonFile.Close()
 	if err != nil {
@@ -53,4 +52,15 @@ func LoadUsers() Users {
 	json.Unmarshal(byteValue, &users)
 	fmt.Println(users)
 	return users
+}
+
+func getKeys(jsonData map[string]interface{}) {
+	for key := range jsonData {
+		fmt.Println(key)
+	}
+}
+
+func GetData() {
+	result := loadJson()
+	getKeys(result)
 }

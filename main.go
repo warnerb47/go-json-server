@@ -6,5 +6,5 @@ import (
 
 func main() {
 	// router.StartApi()
-	fileLoader.LoadUsers()
+	fileLoader.GetData()
 }
