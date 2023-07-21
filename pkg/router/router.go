@@ -2,6 +2,7 @@ package router
 
 import (
 	"errors"
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -64,6 +65,12 @@ func toggleCheck(c *gin.Context) {
 	todo.Completed = !todo.Completed
 	c.IndentedJSON(http.StatusOK, todo)
 
+}
+
+func Configure(data map[string]interface{}) {
+	for key := range data {
+		fmt.Printf("Build route for %v", key)
+	}
 }
 
 func StartApi() {
