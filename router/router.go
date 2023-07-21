@@ -1,4 +1,4 @@
-package main
+package router
 
 import (
 	"errors"
@@ -66,7 +66,7 @@ func toggleCheck(c *gin.Context) {
 
 }
 
-func startApi() {
+func StartApi() {
 	router := gin.Default()
 	router.GET("/todos", getTodos)
 	router.GET("/", getTodos)
