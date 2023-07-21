@@ -5,7 +5,7 @@ import (
 	"os"
 )
 
-func loadJson() {
+func LoadJson() {
 	jsonFile, err := os.Open("users.json")
 	defer jsonFile.Close()
 	if err != nil {
