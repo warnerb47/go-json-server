@@ -1,4 +1,4 @@
-package router
+package main
 
 import (
 	"errors"
@@ -66,12 +66,12 @@ func toggleCheck(c *gin.Context) {
 
 }
 
-func getRouter() *gin.Engine {
+func startApi() {
 	router := gin.Default()
 	router.GET("/todos", getTodos)
+	router.GET("/", getTodos)
 	router.GET("/todos/:id", getTodo)
 	router.PATCH("/todos/:id", toggleCheck)
 	router.POST("/todos", addTodo)
 	router.Run("localhost:3000")
-	return router
 }
