@@ -7,6 +7,6 @@ import (
 
 func main() {
 	result := fileLoader.LoadJson()
-	router.Configure(result)
-	// router.StartApi()
+	// router.Configure(result)
+	router.Configure(result).Run("localhost:3000")
 }

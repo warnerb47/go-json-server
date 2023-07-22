@@ -18,5 +18,16 @@
           "twitter": "https://twitter.com"
         }
       }
-    ]
+    ],
+    "hospitals": [
+      {
+        "name": "Hôpital Fann",
+        "adress": "Dakar plateau"
+      },
+      {
+        "name": "IME Dakar",
+        "adress": "Dakar plateau"
+      }
+    ],
+    "schools": []
   }
