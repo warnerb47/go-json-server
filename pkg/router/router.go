@@ -17,10 +17,11 @@ func Configure(data map[string]interface{}) *gin.Engine {
 		c.JSON(http.StatusOK, gin.H{"status": "ok"})
 	})
 	for key := range data {
+		value := data[key]
 		router.GET("/"+key, func(c *gin.Context) {
-			c.JSON(http.StatusOK, gin.H{"route": key})
+			getEntities(c, value)
 		})
 	}
+
 	return router
-	// return nil
 }
