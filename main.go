@@ -8,5 +8,4 @@ import (
 func main() {
 	result := fileLoader.LoadJson()
 	router.Configure(result).Run("localhost:3000")
-	// router.BuildEntities(result)
 }
