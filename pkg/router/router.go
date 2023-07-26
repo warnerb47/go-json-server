@@ -16,8 +16,8 @@ func formatEntities(key string, value map[string]any) ([]any, error) {
 	return entities, nil
 }
 
-func getEntityById(id string, entities []any) (any, error) {
-	for _, entity := range entities {
+func getEntityById(id string, entities []any) (any, int, error) {
+	for i, entity := range entities {
 		entityMap, ok := entity.(map[string]any)
 		if !ok {
 			fmt.Println("Can not cast entity to map")
@@ -25,10 +25,29 @@ func getEntityById(id string, entities []any) (any, error) {
 		}
 		idFound, idExists := entityMap["id"]
 		if idExists && idFound == id {
-			return entityMap, nil
+			return entityMap, i, nil
 		}
 	}
-	return nil, errors.New("Entity not found")
+	return nil, -1, errors.New("Entity not found")
+}
+
+func updateEntity(c *gin.Context, data []any) {
+	var newValue any
+	id := c.Param("id")
+
+	if err := c.BindJSON((&newValue)); err != nil {
+		return
+	}
+
+	_, i, err := getEntityById(id, data)
+	if err != nil {
+		c.IndentedJSON(http.StatusNotFound, gin.H{"error": "Entity not found"})
+		return
+	}
+	data[i] = newValue
+	fmt.Println(data)
+	c.IndentedJSON(http.StatusOK, newValue)
+
 }
 
 func addEntity(c *gin.Context, data []any) {
@@ -45,7 +64,7 @@ func addEntity(c *gin.Context, data []any) {
 
 func getEntity(c *gin.Context, data []any) {
 	id := c.Param("id")
-	entity, err := getEntityById(id, data)
+	entity, _, err := getEntityById(id, data)
 	if err != nil {
 		c.IndentedJSON(http.StatusNotFound, gin.H{"error": "Entity not found"})
 		return
@@ -75,6 +94,9 @@ func Configure(data map[string]any) *gin.Engine {
 		})
 		router.POST("/"+key, func(c *gin.Context) {
 			addEntity(c, entities)
+		})
+		router.PATCH("/"+key+"/:id", func(c *gin.Context) {
+			updateEntity(c, entities)
 		})
 	}
 
