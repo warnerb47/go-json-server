@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/warnerb47/go-json-server/pkg/fileLoader"
 )
 
 func formatEntities(key string, value map[string]any) ([]any, error) {
@@ -50,14 +51,18 @@ func updateEntity(c *gin.Context, data []any) {
 
 }
 
-func addEntity(c *gin.Context, data []any) {
+func addEntity(c *gin.Context, key string, data []any) {
 	var entity any
 
 	if err := c.BindJSON((&entity)); err != nil {
-		return
+		c.IndentedJSON(http.StatusNotFound, gin.H{"error": "Can not bind json"})
 	}
 
 	data = append(data, entity)
+	err := fileLoader.WriteJson(key, data)
+	if err != nil {
+		c.IndentedJSON(http.StatusNotFound, gin.H{"error": "Can not write json"})
+	}
 	c.IndentedJSON(http.StatusCreated, entity)
 
 }
@@ -93,7 +98,7 @@ func Configure(data map[string]any) *gin.Engine {
 			getEntity(c, entities)
 		})
 		router.POST("/"+key, func(c *gin.Context) {
-			addEntity(c, entities)
+			addEntity(c, key, entities)
 		})
 		router.PATCH("/"+key+"/:id", func(c *gin.Context) {
 			updateEntity(c, entities)

@@ -1,37 +1,43 @@
 {
-    "users": [
-      {
-        "id": "1",
-        "name": "Elliot",
-        "type": "Reader",
-        "age": 23,
-        "social": {
-          "facebook": "https://facebook.com",
-          "twitter": "https://twitter.com"
-        }
-      },
-      {
-        "id": "2",
-        "name": "Fraser",
-        "type": "Author",
-        "age": 17,
-        "social": {
-          "facebook": "https://facebook.com",
-          "twitter": "https://twitter.com"
-        }
-      }
-    ],
     "hospitals": [
-      {
-        "id": "1",
-        "name": "Hôpital Fann",
-        "adress": "Dakar plateau"
-      },
-      {
-        "id": "2",
-        "name": "IME Dakar",
-        "adress": "Dakar plateau"
-      }
+        {
+            "adress": "Dakar plateau",
+            "id": "1",
+            "name": "Hôpital Fann"
+        },
+        {
+            "adress": "Dakar plateau",
+            "id": "2",
+            "name": "IME Dakar"
+        }
     ],
-    "schools": []
-  }
+    "schools": [
+        {
+            "adress": "Dakar",
+            "id": "1",
+            "name": "Lycée Jean Mermoz"
+        }
+    ],
+    "users": [
+        {
+            "age": 23,
+            "id": "1",
+            "name": "Elliot",
+            "social": {
+                "facebook": "https://facebook.com",
+                "twitter": "https://twitter.com"
+            },
+            "type": "Reader"
+        },
+        {
+            "age": 17,
+            "id": "2",
+            "name": "Fraser",
+            "social": {
+                "facebook": "https://facebook.com",
+                "twitter": "https://twitter.com"
+            },
+            "type": "Author"
+        }
+    ]
+}
