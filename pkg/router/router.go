@@ -32,11 +32,12 @@ func getEntityById(id string, entities []any) (any, int, error) {
 	return nil, -1, errors.New("Entity not found")
 }
 
-func updateEntity(c *gin.Context, data []any) {
+func updateEntity(c *gin.Context, key string, data []any) {
 	var newValue any
 	id := c.Param("id")
 
 	if err := c.BindJSON((&newValue)); err != nil {
+		c.IndentedJSON(http.StatusNotFound, gin.H{"error": "can not bind json"})
 		return
 	}
 
@@ -46,7 +47,10 @@ func updateEntity(c *gin.Context, data []any) {
 		return
 	}
 	data[i] = newValue
-	fmt.Println(data)
+	if err := fileLoader.WriteJson(key, data); err != nil {
+		c.IndentedJSON(http.StatusNotFound, gin.H{"error": "Can not write json"})
+		return
+	}
 	c.IndentedJSON(http.StatusOK, newValue)
 
 }
@@ -56,19 +60,27 @@ func addEntity(c *gin.Context, key string, data []any) {
 
 	if err := c.BindJSON((&entity)); err != nil {
 		c.IndentedJSON(http.StatusNotFound, gin.H{"error": "Can not bind json"})
+		return
 	}
 
 	data = append(data, entity)
 	err := fileLoader.WriteJson(key, data)
 	if err != nil {
 		c.IndentedJSON(http.StatusNotFound, gin.H{"error": "Can not write json"})
+		return
 	}
 	c.IndentedJSON(http.StatusCreated, entity)
 
 }
 
-func getEntity(c *gin.Context, data []any) {
+func getEntity(c *gin.Context, key string) {
 	id := c.Param("id")
+	jsonData := fileLoader.LoadJson()
+	data, ok := formatEntities(key, jsonData)
+	if ok != nil {
+		c.IndentedJSON(http.StatusNotFound, gin.H{"error": "Invalid JSON structure"})
+		return
+	}
 	entity, _, err := getEntityById(id, data)
 	if err != nil {
 		c.IndentedJSON(http.StatusNotFound, gin.H{"error": "Entity not found"})
@@ -95,13 +107,13 @@ func Configure(data map[string]any) *gin.Engine {
 			getEntities(c, entities)
 		})
 		router.GET("/"+key+"/:id", func(c *gin.Context) {
-			getEntity(c, entities)
+			getEntity(c, key)
 		})
 		router.POST("/"+key, func(c *gin.Context) {
 			addEntity(c, key, entities)
 		})
 		router.PATCH("/"+key+"/:id", func(c *gin.Context) {
-			updateEntity(c, entities)
+			updateEntity(c, key, entities)
 		})
 	}
 
