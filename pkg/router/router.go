@@ -32,12 +32,18 @@ func getEntityById(id string, entities []any) (any, int, error) {
 	return nil, -1, errors.New("Entity not found")
 }
 
-func updateEntity(c *gin.Context, key string, data []any) {
+func updateEntity(c *gin.Context, key string) {
 	var newValue any
 	id := c.Param("id")
-
 	if err := c.BindJSON((&newValue)); err != nil {
 		c.IndentedJSON(http.StatusNotFound, gin.H{"error": "can not bind json"})
+		return
+	}
+
+	jsonData := fileLoader.LoadJson()
+	data, ok := formatEntities(key, jsonData)
+	if ok != nil {
+		c.IndentedJSON(http.StatusNotFound, gin.H{"error": "Invalid JSON structure"})
 		return
 	}
 
@@ -55,11 +61,17 @@ func updateEntity(c *gin.Context, key string, data []any) {
 
 }
 
-func addEntity(c *gin.Context, key string, data []any) {
+func addEntity(c *gin.Context, key string) {
 	var entity any
-
 	if err := c.BindJSON((&entity)); err != nil {
 		c.IndentedJSON(http.StatusNotFound, gin.H{"error": "Can not bind json"})
+		return
+	}
+
+	jsonData := fileLoader.LoadJson()
+	data, ok := formatEntities(key, jsonData)
+	if ok != nil {
+		c.IndentedJSON(http.StatusNotFound, gin.H{"error": "Invalid JSON structure"})
 		return
 	}
 
@@ -89,7 +101,15 @@ func getEntity(c *gin.Context, key string) {
 	c.IndentedJSON(http.StatusOK, entity)
 }
 
-func getEntities(c *gin.Context, data []any) {
+func getEntities(c *gin.Context, key string) {
+
+	jsonData := fileLoader.LoadJson()
+	data, ok := formatEntities(key, jsonData)
+	if ok != nil {
+		c.IndentedJSON(http.StatusNotFound, gin.H{"error": "Invalid JSON structure"})
+		return
+	}
+
 	c.JSON(http.StatusOK, data)
 }
 
@@ -99,21 +119,17 @@ func Configure(data map[string]any) *gin.Engine {
 
 	for key := range data {
 		enpoints = append(enpoints, key)
-		entities, ok := formatEntities(key, data)
-		if ok != nil {
-			fmt.Printf("Invalid JSON structure: %v\n", key)
-		}
 		router.GET("/"+key, func(c *gin.Context) {
-			getEntities(c, entities)
+			getEntities(c, key)
 		})
 		router.GET("/"+key+"/:id", func(c *gin.Context) {
 			getEntity(c, key)
 		})
 		router.POST("/"+key, func(c *gin.Context) {
-			addEntity(c, key, entities)
+			addEntity(c, key)
 		})
 		router.PATCH("/"+key+"/:id", func(c *gin.Context) {
-			updateEntity(c, key, entities)
+			updateEntity(c, key)
 		})
 	}
 
