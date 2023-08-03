@@ -7,11 +7,13 @@ import (
 	"github.com/warnerb47/go-json-server/storage"
 )
 
-func Start(url string) {
+func Start(url string, filePath string) {
+	storage.Setpath(filePath)
 	configure().Run(url)
 }
 
 func configure() *gin.Engine {
+
 	data := storage.LoadJson()
 	router := gin.Default()
 	var enpoints []string

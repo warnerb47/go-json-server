@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-	"fmt"
 
 	"github.com/warnerb47/go-json-server/api"
 )
@@ -10,6 +9,6 @@ import (
 func main() {
 	port := flag.String("port", "3000", "")
 	flag.Parse()
-	url := fmt.Sprintf("localhost:%s", *port)
-	api.Start(url)
+	filePath := flag.Arg(0)
+	api.Start("localhost:"+*port, filePath)
 }
