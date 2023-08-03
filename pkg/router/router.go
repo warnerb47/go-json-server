@@ -102,14 +102,12 @@ func getEntity(c *gin.Context, key string) {
 }
 
 func getEntities(c *gin.Context, key string) {
-
 	jsonData := fileLoader.LoadJson()
 	data, ok := formatEntities(key, jsonData)
 	if ok != nil {
 		c.IndentedJSON(http.StatusNotFound, gin.H{"error": "Invalid JSON structure"})
 		return
 	}
-
 	c.JSON(http.StatusOK, data)
 }
 
