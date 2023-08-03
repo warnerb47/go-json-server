@@ -111,7 +111,8 @@ func getEntities(c *gin.Context, key string) {
 	c.JSON(http.StatusOK, data)
 }
 
-func Configure(data map[string]any) *gin.Engine {
+func Configure() *gin.Engine {
+	data := fileLoader.LoadJson()
 	router := gin.Default()
 	var enpoints []string
 

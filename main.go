@@ -1,11 +1,15 @@
 package main
 
 import (
-	"github.com/warnerb47/go-json-server/pkg/fileLoader"
+	"flag"
+	"fmt"
+
 	"github.com/warnerb47/go-json-server/pkg/router"
 )
 
 func main() {
-	result := fileLoader.LoadJson()
-	router.Configure(result).Run("localhost:3000")
+	port := flag.String("port", "3000", "")
+	flag.Parse()
+	url := fmt.Sprintf("localhost:%s", *port)
+	router.Configure().Run(url)
 }
