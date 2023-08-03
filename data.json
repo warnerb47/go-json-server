@@ -1,1 +1,43 @@
-{"hospitals":[{"adress":"Dakar","id":"1","name":"Hôpital Fann"},{"age":17,"id":"2","name":"Fraser","social":{"facebook":"https://facebook.com","twitter":"https://twitter.com"},"type":"Author"}],"schools":[{"adress":"Dakar","id":"1","name":"Lycée Jean Mermoz"}],"users":[{"age":23,"id":"1","name":"Elliot","social":{"facebook":"https://facebook.com","twitter":"https://twitter.com"},"type":"Reader"},{"age":17,"id":"2","name":"Fraser","social":{"facebook":"https://facebook.com","twitter":"https://twitter.com"},"type":"Author"}]}
+{
+    "hospitals": [
+        {
+            "adress": "Dakar",
+            "id": "1",
+            "name": "Hôpital Fann"
+        },
+        {
+            "adress": "Dakar",
+            "id": "2",
+            "name": "Dalal Jam"
+        }
+    ],
+    "schools": [
+        {
+            "adress": "Dakar",
+            "id": "1",
+            "name": "Lycée Jean Mermoz"
+        }
+    ],
+    "users": [
+        {
+            "age": 23,
+            "id": "1",
+            "name": "Elliot",
+            "social": {
+                "facebook": "https://facebook.com",
+                "twitter": "https://twitter.com"
+            },
+            "type": "Reader"
+        },
+        {
+            "age": 17,
+            "id": "2",
+            "name": "Fraser",
+            "social": {
+                "facebook": "https://facebook.com",
+                "twitter": "https://twitter.com"
+            },
+            "type": "Author"
+        }
+    ]
+}

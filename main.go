@@ -1,11 +1,14 @@
 package main
 
 import (
-	"github.com/warnerb47/go-json-server/pkg/fileLoader"
-	"github.com/warnerb47/go-json-server/pkg/router"
+	"flag"
+
+	"github.com/warnerb47/go-json-server/api"
 )
 
 func main() {
-	result := fileLoader.LoadJson()
-	router.Configure(result).Run("localhost:3000")
+	port := flag.String("port", "3000", "")
+	flag.Parse()
+	filePath := flag.Arg(0)
+	api.Start("localhost:"+*port, filePath)
 }
