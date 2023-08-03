@@ -1,4 +1,4 @@
-package fileLoader
+package storage
 
 import (
 	"encoding/json"
@@ -7,8 +7,10 @@ import (
 	"os"
 )
 
+var Path string = "./data.json"
+
 func LoadJson() map[string]any {
-	jsonFile, err := os.Open("./data.json")
+	jsonFile, err := os.Open(Path)
 	defer jsonFile.Close()
 	if err != nil {
 		fmt.Println(err)
@@ -30,7 +32,7 @@ func WriteJson(key string, data any) error {
 	if err != nil {
 		return err
 	}
-	err = ioutil.WriteFile("data.json", byte, 0644)
+	err = ioutil.WriteFile(Path, byte, 0644)
 	if err != nil {
 		return err
 	}
