@@ -77,14 +77,16 @@ func handleGetEntity(c *gin.Context, key string) {
 	c.IndentedJSON(http.StatusOK, entity)
 }
 
-func handleGetEntities(c *gin.Context, key string) {
+func handleGetEntities(c *gin.Context, key string) ([]any, error) {
 	jsonData := Storage.Load()
 	data, ok := formatEntities(key, jsonData)
 	if ok != nil {
 		c.IndentedJSON(http.StatusNotFound, gin.H{"error": "Invalid JSON structure"})
-		return
+		return nil, errors.New("Invalid JSON structure")
 	}
 	c.JSON(http.StatusOK, data)
+	return data, nil
+
 }
 
 func formatEntities(key string, value map[string]any) ([]any, error) {
