@@ -10,8 +10,12 @@ import (
 var Storage storage.Storage
 
 func Start(url string, filePath string) {
-
 	Storage = storage.NewFileStorage(filePath)
+	configure().Run(url)
+}
+
+func StartMock(url string, filePath string) {
+	Storage = storage.NewMockFileStorage()
 	configure().Run(url)
 }
 
