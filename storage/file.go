@@ -7,8 +7,6 @@ import (
 	"os"
 )
 
-var Path string
-
 type FileStorage struct {
 	Path string
 }

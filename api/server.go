@@ -14,7 +14,7 @@ func Start(url string, filePath string) {
 	configure().Run(url)
 }
 
-func StartMock(url string, filePath string) {
+func StartMock(url string) {
 	Storage = storage.NewMockFileStorage()
 	configure().Run(url)
 }
