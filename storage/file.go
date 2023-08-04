@@ -14,20 +14,22 @@ type FileStorage struct {
 }
 
 func NewFileStorage(path string) *FileStorage {
-	Setpath(path)
-	return &FileStorage{}
+	s := &FileStorage{
+		Path: path,
+	}
+	return s
 }
 
-func Setpath(p string) {
+func (s *FileStorage) Setpath(p string) {
 	if p != "" {
-		Path = p
+		s.Path = p
 	} else {
-		Path = "./data.json"
+		s.Path = "./data.json"
 	}
 }
 
 func (s *FileStorage) Load() map[string]any {
-	jsonFile, err := os.Open(Path)
+	jsonFile, err := os.Open(s.Path)
 	defer jsonFile.Close()
 	if err != nil {
 		fmt.Println(err)
@@ -49,7 +51,7 @@ func (s *FileStorage) Write(key string, data any) error {
 	if err != nil {
 		return err
 	}
-	err = ioutil.WriteFile(Path, byte, 0644)
+	err = ioutil.WriteFile(s.Path, byte, 0644)
 	if err != nil {
 		return err
 	}
