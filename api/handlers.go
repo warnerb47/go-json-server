@@ -6,7 +6,6 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/warnerb47/go-json-server/storage"
 )
 
 func handleUpdateEntity(c *gin.Context, key string) {
@@ -17,7 +16,7 @@ func handleUpdateEntity(c *gin.Context, key string) {
 		return
 	}
 
-	jsonData := storage.LoadJson()
+	jsonData := Storage.Load()
 	data, ok := formatEntities(key, jsonData)
 	if ok != nil {
 		c.IndentedJSON(http.StatusNotFound, gin.H{"error": "Invalid JSON structure"})
@@ -30,7 +29,7 @@ func handleUpdateEntity(c *gin.Context, key string) {
 		return
 	}
 	data[i] = newValue
-	if err := storage.WriteJson(key, data); err != nil {
+	if err := Storage.Write(key, data); err != nil {
 		c.IndentedJSON(http.StatusNotFound, gin.H{"error": "Can not write json"})
 		return
 	}
@@ -45,7 +44,7 @@ func handleAddEntity(c *gin.Context, key string) {
 		return
 	}
 
-	jsonData := storage.LoadJson()
+	jsonData := Storage.Load()
 	data, ok := formatEntities(key, jsonData)
 	if ok != nil {
 		c.IndentedJSON(http.StatusNotFound, gin.H{"error": "Invalid JSON structure"})
@@ -53,7 +52,7 @@ func handleAddEntity(c *gin.Context, key string) {
 	}
 
 	data = append(data, entity)
-	err := storage.WriteJson(key, data)
+	err := Storage.Write(key, data)
 	if err != nil {
 		c.IndentedJSON(http.StatusNotFound, gin.H{"error": "Can not write json"})
 		return
@@ -64,7 +63,7 @@ func handleAddEntity(c *gin.Context, key string) {
 
 func handleGetEntity(c *gin.Context, key string) {
 	id := c.Param("id")
-	jsonData := storage.LoadJson()
+	jsonData := Storage.Load()
 	data, ok := formatEntities(key, jsonData)
 	if ok != nil {
 		c.IndentedJSON(http.StatusNotFound, gin.H{"error": "Invalid JSON structure"})
@@ -79,7 +78,7 @@ func handleGetEntity(c *gin.Context, key string) {
 }
 
 func handleGetEntities(c *gin.Context, key string) {
-	jsonData := storage.LoadJson()
+	jsonData := Storage.Load()
 	data, ok := formatEntities(key, jsonData)
 	if ok != nil {
 		c.IndentedJSON(http.StatusNotFound, gin.H{"error": "Invalid JSON structure"})
